@@ -1,0 +1,189 @@
+@font-face {
+  font-family: ykw;
+  src: url('/fonts/ChangaOne-Regular.ttf');
+}
+
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.container p {
+  font-family: ykw, sans-serif;
+  color: rgb(40, 24, 76);
+}
+
+.uiBG {
+  font-size: 1rem;
+  border: 4px solid transparent;
+  border-image: linear-gradient(45deg, #FFB8E0, #80c6ff);
+  border-image-slice: 1;
+  background-color: rgba(255, 255, 255, 0.948);
+  color: rgb(40, 24, 76);
+  cursor: pointer;
+}
+
+.bg {
+  object-fit: cover;
+  z-index: 0;
+}
+
+.padTrans {
+  object-fit: cover;
+  z-index: 20;
+  display: none;
+}
+
+.toggleMusic {
+  position: absolute;
+  height: 10%;
+  width: 5%;
+  top: 90%;
+  left: 2%;
+  z-index: 5;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.homeButton {
+  position: absolute;
+  top: 4%;
+  left: 2%;
+  height: 10%;
+  width: 5%;
+  z-index: 5;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.teamSelect {
+  font-family: ykw, sans-serif;
+  position: absolute;
+  height: 10%;
+  width: 45%;
+  left: 27.5%;
+  top: 40%;
+  font-size: 2vw;
+  z-index: 4;
+}
+
+.tierSelect {
+  font-family: ykw, sans-serif;
+  position: absolute;
+  height: 10%;
+  width: 45%;
+  left: 27.5%;
+  top: 20%;
+  font-size: 2vw;
+  z-index: 4;
+}
+
+.tierLabel {
+  font-size: 2vw !important;
+  position: absolute;
+  left: 27.5%;
+  top: 10%;
+  z-index: 3;
+}
+
+.teamLabel {
+  font-size: 2vw !important;
+  position: absolute;
+  left: 27.5%;
+  top: 30%;
+  z-index: 3;
+}
+
+.countData {
+  font-size: 1.5vw !important;
+  position: absolute;
+  left: 27.5%;
+  top: 60%;
+  z-index: 3;
+}
+
+.battleButton {
+  font-size: 2vw !important;
+  position: absolute;
+  left: 27.5%;
+  top: 75%;
+  height: 10%;
+  width: 45%;
+  font-family: ykw, sans-serif;
+  z-index: 4;
+}
+
+.bgSprite {
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.menuBG {
+  position: absolute;
+  top: 0%;
+  left: 25%;
+  height: 100%;
+  width: 50%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.matchmakingMenu {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.4);
+  z-index: 10;
+  display: none;
+  cursor: pointer;
+}
+
+.fullPanelBG {
+  object-fit: cover;
+  z-index: 11;
+}
+
+.lookingText {
+  position: absolute;
+  font-size: 3vw !important;
+  left: 15%;
+  top: 40%;
+  z-index: 12;
+}
+
+.usernameInput {
+  position: absolute;
+  height: 5%;
+  width: 20%;
+  top: 4%;
+  left: 52%;
+  font-family: ykw, sans-serif;
+  z-index: 5;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
