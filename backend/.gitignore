@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+uv.lock
+
+# env stuff 
+.env
+.venv
+
+#logs 
+*.log
+
+# DB stuff
+*.db
+*.duckdb
+*.duckdb.wal
+data/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# mac stuff (idk what else comes up on mac but should be covered here) 
+.DS_Store
+Thumbs.db
