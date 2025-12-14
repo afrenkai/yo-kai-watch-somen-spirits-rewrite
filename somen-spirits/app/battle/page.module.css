@@ -1,0 +1,566 @@
+@font-face {
+  font-family: ykw;
+  src: url('/fonts/ChangaOne-Regular.ttf');
+}
+
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-image: url('/images/battle/battleBG.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.container p {
+  font-family: ykw, sans-serif;
+  font-size: 1.5vw;
+}
+
+/* Battle Viewport - Main Battle Screen */
+.battleViewport {
+  position: absolute;
+  height: 58%;
+  width: 58%;
+  top: 0%;
+  left: 0%;
+  overflow: hidden;
+}
+
+.battleViewportBG {
+  object-fit: cover;
+}
+
+/* Wheel Components */
+.wheelBG, .wheelLines, .wheelShadow, .wheelViewport, .soultimateBG {
+  position: absolute;
+  height: 42vmin;
+  width: 42vmin;
+  top: 58vmin;
+  left: 30vmin;
+  border-radius: 50%;
+}
+
+.wheelShadow {
+  height: 44vmin;
+  top: 35vmin;
+  pointer-events: none;
+}
+
+.wheelViewport {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Action Buttons */
+.soultimateButton, .targetButton, .checkButton, .purifyButton {
+  position: absolute;
+  height: 21vmin;
+  width: 21vmin;
+  user-select: none;
+  -webkit-user-select: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.soultimateButton {
+  top: 58.2vmin;
+  left: 24vmin;
+  z-index: 10;
+}
+
+.targetButton {
+  top: 58.2vmin;
+  left: 57.5vmin;
+  z-index: 10;
+}
+
+.checkButton {
+  top: 79vmin;
+  left: 57.5vmin;
+  z-index: 10;
+}
+
+.purifyButton {
+  top: 79vmin;
+  left: 24vmin;
+  z-index: 10;
+}
+
+.toggleMid {
+  position: absolute;
+  height: 22vmin;
+  width: 22vmin;
+  top: 68vmin;
+  left: 40vmin;
+  border-radius: 50%;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 15;
+}
+
+.wheelMid {
+  position: absolute;
+  height: 22vmin;
+  width: 22vmin;
+  top: 68vmin;
+  left: 40vmin;
+  user-select: none;
+  pointer-events: none;
+  z-index: 14;
+}
+
+/* Wheel Slots */
+.slot1, .slot2, .slot3, .slot4, .slot5, .slot6 {
+  position: absolute;
+  height: 23%;
+  width: 23%;
+}
+
+.slot1 {
+  top: 16%;
+  left: 39%;
+}
+
+.slot2 {
+  top: 24%;
+  left: 63%;
+}
+
+.slot3 {
+  top: 53%;
+  left: 63%;
+}
+
+.slot4 {
+  top: 61%;
+  left: 39%;
+}
+
+.slot5 {
+  top: 53%;
+  left: 15%;
+}
+
+.slot6 {
+  top: 24%;
+  left: 15%;
+}
+
+/* Progress Bars */
+.HP {
+  border: 2px solid #000;
+  background-color: #333;
+  height: 1.5vw;
+}
+
+.HP::-webkit-progress-bar {
+  background-color: #333;
+}
+
+.HP::-webkit-progress-value {
+  background: linear-gradient(to right, #4CAF50, #8BC34A);
+}
+
+.SOUL {
+  border: 2px solid #000;
+  background-color: #333;
+  height: 1.5vw;
+}
+
+.SOUL::-webkit-progress-bar {
+  background-color: #333;
+}
+
+.SOUL::-webkit-progress-value {
+  background: linear-gradient(to right, #9C27B0, #E91E63);
+}
+
+.DAMAGE {
+  border: 2px solid #000;
+  background-color: #333;
+  height: 1.5vw;
+}
+
+/* Names and HP Bars - My Team */
+.myName0, .myName1, .myName2 {
+  position: absolute;
+  font-size: 1.2vw !important;
+  color: #ff7cc4;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.myName0 { top: 64%; left: 2%; }
+.myName1 { top: 74%; left: 2%; }
+.myName2 { top: 84%; left: 2%; }
+
+.myHP0, .myHP1, .myHP2 {
+  position: absolute;
+  width: 15%;
+}
+
+.myHP0 { top: 68%; left: 2%; }
+.myHP1 { top: 78%; left: 2%; }
+.myHP2 { top: 88%; left: 2%; }
+
+.mySoul0, .mySoul1, .mySoul2 {
+  position: absolute;
+  width: 15%;
+}
+
+.mySoul0 { top: 71%; left: 2%; }
+.mySoul1 { top: 81%; left: 2%; }
+.mySoul2 { top: 91%; left: 2%; }
+
+/* Names and HP Bars - Opponent Team */
+.otherName0, .otherName1, .otherName2 {
+  position: absolute;
+  font-size: 1.2vw !important;
+  color: #52acf0;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.otherName0 { top: 8%; right: 2%; }
+.otherName1 { top: 18%; right: 2%; }
+.otherName2 { top: 28%; right: 2%; }
+
+.otherHP0, .otherHP1, .otherHP2 {
+  position: absolute;
+  width: 15%;
+}
+
+.otherHP0 { top: 12%; right: 2%; }
+.otherHP1 { top: 22%; right: 2%; }
+.otherHP2 { top: 32%; right: 2%; }
+
+/* Yokai Sprites */
+.myYokai, .otherYokai {
+  position: absolute;
+  cursor: pointer;
+}
+
+.myYokai0 { bottom: 28%; left: 5%; height: 18%; width: auto; }
+.myYokai1 { bottom: 10%; left: 5%; height: 18%; width: auto; }
+.myYokai2 { bottom: -8%; left: 5%; height: 18%; width: auto; }
+
+.otherYokai0 { top: 10%; right: 5%; height: 18%; width: auto; }
+.otherYokai1 { top: 28%; right: 5%; height: 18%; width: auto; }
+.otherYokai2 { top: 46%; right: 5%; height: 18%; width: auto; }
+
+/* Inspirit Icons */
+.spin {
+  animation: spin 2s linear infinite;
+  display: none;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.myPosInsp0, .myPosInsp1, .myPosInsp2,
+.myNegInsp0, .myNegInsp1, .myNegInsp2,
+.otherPosInsp0, .otherPosInsp1, .otherPosInsp2,
+.otherNegInsp0, .otherNegInsp1, .otherNegInsp2 {
+  position: absolute;
+  height: 3vw;
+  width: 3vw;
+}
+
+/* Status Text */
+.viewText {
+  display: none;
+  position: absolute;
+  font-size: 1.2vw !important;
+  color: #fff;
+  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+}
+
+.switchingText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2vw !important;
+  color: #fff;
+  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+  display: none;
+  z-index: 20;
+}
+
+/* Chat */
+.chatBG {
+  position: absolute;
+  height: 25%;
+  width: 30%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 5;
+}
+
+.chatBox {
+  position: absolute;
+  height: 20%;
+  width: 28%;
+  right: 1%;
+  bottom: 6%;
+  overflow-y: scroll;
+  z-index: 6;
+}
+
+.messageInput {
+  position: absolute;
+  height: 3%;
+  width: 28%;
+  right: 1%;
+  bottom: 2%;
+  font-family: ykw, sans-serif;
+  z-index: 6;
+}
+
+/* Cursors */
+.targetCursor, .checkCursor {
+  position: absolute;
+  height: 5vw;
+  width: 5vw;
+  pointer-events: none;
+  display: none;
+  z-index: 30;
+}
+
+/* Info Display */
+.infoDisplay {
+  position: absolute;
+  top: 1%;
+  right: 31%;
+  height: 15%;
+  width: 20%;
+  display: none;
+  z-index: 10;
+}
+
+.infoText {
+  font-size: 1.2vw !important;
+  color: #fff;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+/* Music Toggle */
+.toggleMusic {
+  position: absolute;
+  height: 10%;
+  width: 5%;
+  top: 90%;
+  left: 2%;
+  z-index: 20;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* Selection Overlays */
+.soultSelect, .purifySelect {
+  position: absolute;
+  height: 44vmin;
+  width: 42vmin;
+  pointer-events: none;
+  display: none;
+  z-index: 11;
+}
+
+.soultSelect {
+  top: 79vmin;
+  left: 30vmin;
+}
+
+.purifySelect {
+  top: 35vmin;
+  left: 30vmin;
+}
+
+.cancelSoult, .cancelPurify {
+  position: absolute;
+  font-size: 1.5vw !important;
+  color: #fff;
+  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+  display: none;
+  z-index: 12;
+}
+
+.cancelSoult {
+  top: 50%;
+  left: 35%;
+}
+
+.cancelPurify {
+  top: 25%;
+  left: 35%;
+}
+
+.chargedLabel {
+  position: absolute;
+  top: 45%;
+  left: 45%;
+  font-size: 3vw !important;
+  color: #ffeb3b;
+  text-shadow: -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000, 3px 3px 0 #000;
+  display: none;
+  z-index: 25;
+}
+
+/* Minigame */
+.minigameTypeLabel, .minigameTypeInput {
+  position: absolute;
+  display: none;
+  z-index: 20;
+}
+
+.minigameTypeLabel {
+  top: 40%;
+  left: 30%;
+  font-size: 2vw !important;
+}
+
+.minigameTypeInput {
+  top: 50%;
+  left: 35%;
+  width: 30%;
+  height: 5%;
+  font-size: 2vw;
+  font-family: ykw, sans-serif;
+}
+
+/* Action Buttons (Soultimate/Purify Select) */
+.oneSoult, .twoSoult, .threeSoult,
+.onePurify, .twoPurify, .threePurify {
+  position: absolute;
+  height: 10vmin;
+  width: 10vmin;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: none;
+  z-index: 15;
+}
+
+/* Poke Buttons */
+.pokeDamageButton, .pokeSoulButton {
+  position: absolute;
+  height: 8vmin;
+  width: 8vmin;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: none;
+  z-index: 15;
+}
+
+/* Timers */
+.switchCooldown, .switchTimer {
+  position: absolute;
+  height: 15vmin;
+  width: 15vmin;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: none;
+  z-index: 20;
+}
+
+.switchCooldown {
+  top: 10%;
+  left: 45%;
+}
+
+.switchTimer {
+  top: 70%;
+  left: 45%;
+}
+
+.cooldownCount, .timerCount {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 8vmin !important;
+  color: #fff;
+}
+
+/* Results and Alerts */
+.results, .alertMessage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  z-index: 50;
+  cursor: pointer;
+}
+
+.alertText1 {
+  position: absolute;
+  top: 40%;
+  left: 20%;
+  width: 60%;
+  font-size: 2vw !important;
+  color: #000;
+  text-align: center;
+}
+
+/* Video */
+.soultimateVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  z-index: 40;
+}
+
+/* Preload Images */
+.preload {
+  display: none;
+}
+
+/* Yokai Thumbnail */
+.yokaiThumbnail {
+  position: absolute;
+  top: 65vmin;
+  left: 42vmin;
+  height: 18vmin;
+  width: 18vmin;
+  display: none;
+  z-index: 13;
+}
+
+/* Charge Bars */
+.soultCharge {
+  position: absolute;
+  top: 85vmin;
+  left: 40vmin;
+  width: 22vmin;
+  display: none;
+  z-index: 13;
+}
+
+.pokeDamageCharge, .pokeSoulCharge {
+  position: absolute;
+  width: 10vmin;
+  display: none;
+  z-index: 10;
+}
+
+/* Pins */
+.pin0, .pin1, .pin2 {
+  position: absolute;
+  height: 2vw;
+  width: 2vw;
+  display: none;
+}

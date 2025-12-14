@@ -1,0 +1,600 @@
+@font-face {
+  font-family: ykw;
+  src: url('/fonts/ChangaOne-Regular.ttf');
+}
+
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.container p {
+  font-family: ykw, sans-serif;
+  font-size: 1.5vw;
+  color: rgb(40, 24, 76);
+  display: inline;
+}
+
+.container button {
+  border: 4px solid transparent;
+  border-image: linear-gradient(45deg, #FFB8E0, #80c6ff);
+  border-image-slice: 1;
+  background-color: rgb(255, 255, 255);
+  color: rgb(40, 24, 76);
+  cursor: pointer;
+  font-size: 1.5vw;
+  font-family: ykw, sans-serif;
+}
+
+.container input {
+  font-family: ykw, sans-serif;
+  font-size: 1vw;
+  width: 13%;
+  height: 5%;
+}
+
+.container select {
+  font-family: ykw, sans-serif;
+  font-size: 1vw;
+}
+
+.bg {
+  object-fit: cover;
+  z-index: 0;
+}
+
+.padTrans {
+  object-fit: cover;
+  z-index: 20;
+  display: none;
+}
+
+.toggleMusic {
+  position: absolute;
+  height: 10%;
+  width: 5%;
+  top: 90%;
+  left: 2%;
+  z-index: 5;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.homeButton {
+  position: absolute;
+  top: 4%;
+  left: 2%;
+  height: 10%;
+  width: 5%;
+  z-index: 5;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.yokaiGif {
+  position: absolute;
+  height: 40%;
+  width: 22%;
+  top: 5%;
+  left: 6%;
+  z-index: 2;
+}
+
+.yokaiName {
+  font-family: ykw, sans-serif;
+  color: #fff;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+  position: absolute;
+  font-size: 3vw !important;
+  top: 40%;
+  left: 6%;
+  z-index: 3;
+}
+
+.uiBG {
+  font-size: 1rem;
+  border: 4px solid transparent;
+  border-image: linear-gradient(45deg, #FFB8E0, #80c6ff);
+  border-image-slice: 1;
+  background-color: rgba(255, 255, 255, 0.948);
+  color: rgb(40, 24, 76);
+  cursor: pointer;
+}
+
+.yokaiWheel {
+  position: absolute;
+  height: 45%;
+  width: 25%;
+  top: 53%;
+  left: 5.5%;
+  z-index: 1;
+}
+
+.yokaiList {
+  position: absolute;
+  height: 40%;
+  width: 50%;
+  left: 35%;
+  top: 60%;
+  overflow: scroll;
+  z-index: 4;
+}
+
+.itemList {
+  position: absolute;
+  height: 40%;
+  width: 50%;
+  left: 35%;
+  top: 60%;
+  overflow: scroll;
+  z-index: 4;
+}
+
+.currentInfo {
+  position: absolute;
+  height: 50%;
+  width: 50%;
+  left: 35%;
+  top: 10%;
+  overflow: scroll;
+  z-index: 4;
+}
+
+.teamSelect {
+  font-family: ykw, sans-serif;
+  position: absolute;
+  height: 7%;
+  width: 25%;
+  left: 34.9%;
+  top: 1.5%;
+  z-index: 4;
+}
+
+.nameTeam {
+  position: absolute;
+  height: 6.35%;
+  width: 24.8%;
+  left: 59.9%;
+  top: 1.5%;
+  font-family: ykw, sans-serif;
+  z-index: 4;
+}
+
+.teamCreate {
+  position: absolute;
+  height: 5%;
+  width: 10%;
+  left: 88%;
+  top: 1.5%;
+  font-family: ykw, sans-serif;
+  font-size: 1vw !important;
+  z-index: 4;
+}
+
+.teamRename {
+  position: absolute;
+  height: 5%;
+  width: 10%;
+  left: 88%;
+  top: 7%;
+  font-family: ykw, sans-serif;
+  font-size: 1vw !important;
+  z-index: 4;
+}
+
+.teamDelete {
+  position: absolute;
+  height: 5%;
+  width: 10%;
+  left: 88%;
+  top: 12.5%;
+  font-family: ykw, sans-serif;
+  font-size: 1vw !important;
+  z-index: 4;
+}
+
+.slot1 {
+  position: absolute;
+  height: 10%;
+  width: 6%;
+  top: 63.5%;
+  left: 8.25%;
+  z-index: 3;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.slot2 {
+  position: absolute;
+  height: 10%;
+  width: 6%;
+  top: 56.7%;
+  left: 15.1%;
+  z-index: 3;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.slot3 {
+  position: absolute;
+  height: 10%;
+  width: 6%;
+  top: 63.7%;
+  left: 21.7%;
+  z-index: 3;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.slot4 {
+  position: absolute;
+  height: 10%;
+  width: 6%;
+  top: 77.2%;
+  left: 21.7%;
+  z-index: 3;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.slot5 {
+  position: absolute;
+  height: 10%;
+  width: 6%;
+  top: 84.4%;
+  left: 15.1%;
+  z-index: 3;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.slot6 {
+  position: absolute;
+  height: 10%;
+  width: 6%;
+  top: 77.2%;
+  left: 8.25%;
+  z-index: 3;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.deleteYokai {
+  position: absolute;
+  height: 5%;
+  width: 10%;
+  left: 0.5%;
+  top: 52.5%;
+  font-family: ykw, sans-serif;
+  font-size: 1vw !important;
+  z-index: 4;
+}
+
+.moveYokai {
+  position: absolute;
+  height: 5%;
+  width: 8%;
+  left: 26.5%;
+  top: 52.5%;
+  font-family: ykw, sans-serif;
+  font-size: 1vw !important;
+  z-index: 4;
+}
+
+.currentText {
+  font-size: 1.5vw !important;
+}
+
+.addYokai {
+  position: absolute;
+  height: 5%;
+  width: 10%;
+  left: 88%;
+  top: 60%;
+  font-family: ykw, sans-serif;
+  font-size: 1vw !important;
+  z-index: 4;
+}
+
+.addItems {
+  position: absolute;
+  height: 5%;
+  width: 10%;
+  left: 88%;
+  top: 66%;
+  font-family: ykw, sans-serif;
+  font-size: 1vw !important;
+  z-index: 4;
+}
+
+.equipText {
+  color: #8095ff !important;
+}
+
+.clearItems {
+  height: 10%;
+  width: 15%;
+  font-family: ykw, sans-serif;
+  font-size: 1vw !important;
+}
+
+.statsChart {
+  position: absolute;
+  width: 50%;
+  height: 70%;
+  left: 65%;
+  top: 12%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.chartBar {
+  height: 5%;
+  width: 30%;
+}
+
+.probChart {
+  position: absolute;
+  width: 25%;
+  height: 15%;
+  left: 60%;
+  top: 31%;
+  z-index: 3;
+}
+
+.probText {
+  font-size: 1vw !important;
+}
+
+.apDisplay {
+  position: absolute;
+  top: 50%;
+  left: 73%;
+  color: #80ffbd !important;
+  font-size: 2.5vw !important;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+  z-index: 3;
+}
+
+.setBony {
+  position: absolute;
+  height: 5%;
+  width: 10%;
+  left: 50%;
+  top: 55%;
+  font-family: ykw, sans-serif;
+  font-size: 1.5vw !important;
+  color: #ff8080 !important;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+  z-index: 4;
+}
+
+.setFleshy {
+  position: absolute;
+  height: 5%;
+  width: 10%;
+  left: 60%;
+  top: 55%;
+  font-family: ykw, sans-serif;
+  font-size: 1.5vw !important;
+  color: #80c8ff !important;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+  z-index: 4;
+}
+
+.pasteOutput {
+  overflow: scroll;
+  position: absolute;
+  height: 35%;
+  width: 35%;
+  top: 30%;
+  left: 35%;
+  background-color: rgba(255, 255, 255, 1);
+  z-index: 10;
+  display: none;
+}
+
+.pasteText {
+  font-size: 1vw !important;
+  color: #cdb3ff !important;
+}
+
+.closePaste {
+  position: absolute;
+  left: 85%;
+  top: 0%;
+  width: 10%;
+  height: 10%;
+}
+
+.importTeam {
+  position: absolute;
+  height: 5%;
+  width: 10%;
+  left: 88%;
+  top: 35%;
+  font-family: ykw, sans-serif;
+  font-size: 1vw !important;
+  z-index: 4;
+}
+
+.exportTeam {
+  position: absolute;
+  height: 5%;
+  width: 10%;
+  left: 88%;
+  top: 41%;
+  font-family: ykw, sans-serif;
+  font-size: 1vw !important;
+  z-index: 4;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* New styles for enhanced teambuilder */
+.searchInput {
+  width: 90% !important;
+  margin: 10px auto;
+  padding: 8px;
+  font-size: 1.2vw !important;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  display: block;
+}
+
+.yokaiListScroll {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.yokaiOption {
+  width: 95%;
+  margin: 5px auto;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  transition: background-color 0.2s;
+}
+
+.yokaiOption:hover {
+  background-color: rgba(255, 184, 224, 0.3);
+}
+
+.medalList {
+  flex-shrink: 0;
+}
+
+.equipmentItem {
+  padding: 10px;
+  margin: 5px;
+  border-bottom: 1px solid #ccc;
+}
+
+.equipmentItem:hover {
+  background-color: rgba(128, 198, 255, 0.2);
+}
+
+.teamManagement {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 90%;
+}
+
+.teamManagement select,
+.teamManagement input,
+.teamManagement button {
+  padding: 8px 12px;
+  font-size: 1.2vw;
+}
+
+.teamSelect {
+  min-width: 150px;
+}
+
+.nameTeam {
+  min-width: 200px;
+}
+
+.createTeam,
+.saveTeam,
+.renameTeam,
+.deleteTeam {
+  min-width: 100px;
+}
+
+.saveTeam {
+  background-color: #4ecdc4;
+  color: white;
+}
+
+.deleteTeam {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+.deleteTeam:disabled,
+.saveTeam:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.attitudeLabel {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.attitudeSelect {
+  width: 90% !important;
+  padding: 5px;
+  margin: 5px 0;
+}
+
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  font-family: ykw, sans-serif;
+  color: rgb(40, 24, 76);
+  z-index: 100;
+}
