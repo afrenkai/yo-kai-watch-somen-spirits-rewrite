@@ -3,20 +3,26 @@ import duckdb
 import os
 from typing import Generator
 from contextlib import contextmanager
+import threading
 
 duckdb_conn = None
+db_lock = threading.Lock()
 
 #disgusting logic for handling duckdb conn
 def get_duckdb():
     global duckdb_conn
     if duckdb_conn is None:
-        os.makedirs(os.path.dirname(settings.DUCKDB_PATH), exist_ok=True)
-        duckdb_conn = duckdb.connect(settings.DUCKDB_PATH)
+        with db_lock:
+            if duckdb_conn is None:  # Double-check locking
+                os.makedirs(os.path.dirname(settings.DUCKDB_PATH), exist_ok=True)
+                # Connect in read-write mode
+                duckdb_conn = duckdb.connect(settings.DUCKDB_PATH, read_only=False)
     return duckdb_conn
 
 
 @contextmanager
 def get_db() -> Generator[duckdb.DuckDBPyConnection, None, None]:
+    # Use the shared connection with thread safety
     db = get_duckdb()
     try:
         yield db

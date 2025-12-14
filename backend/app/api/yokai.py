@@ -50,7 +50,7 @@ class YokaiResponse(BaseModel):
 @router.get("/", response_model=List[YokaiResponse])
 def get_all_yokai(
     skip: int = 0,
-    limit: int = 100,
+    limit: int = 1000,  # Increased from 100 to fetch all yokai at once
     tribe: str | None = None,
     rank: str | None = None,
     tier: str | None = None
@@ -70,6 +70,8 @@ def get_all_yokai(
             query += " AND tier = ?"
             params.append(tier)
         
+        # Add ORDER BY for consistent results
+        query += " ORDER BY id"
         query += f" LIMIT {limit} OFFSET {skip}"
         
         result = db.execute(query, params).fetchall()

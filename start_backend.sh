@@ -5,5 +5,5 @@ set -e
 echo "Starting backend server..."
 
 cd backend
-
+uv run seed_database.py
 uv run uvicorn main:socket_app --reload --host 0.0.0.0 --port 8000
