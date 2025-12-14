@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional, List
 
 
@@ -8,7 +8,7 @@ class User(BaseModel):
     username: str
     email: Optional[EmailStr] = None
     hashed_password: str
-    created_at: datetime = datetime.now(datetime.timezone.utc)
+    created_at: datetime = datetime.now(timezone.utc)
     total_battles: int = 0
     wins: int = 0
     losses: int = 0
@@ -24,8 +24,8 @@ class Team(BaseModel):
     yokai_ids: List[int]
     tier: str = "OU"
     is_public: int = 1
-    created_at: datetime = datetime.now(datetime.timezone.utc)
-    updated_at: datetime = datetime.now(datetime.timezone.utc)
+    created_at: datetime = datetime.now(timezone.utc)
+    updated_at: datetime = datetime.now(timezone.utc)
 
     class Config:
         from_attributes = True
@@ -42,7 +42,7 @@ class Battle(BaseModel):
     duration: Optional[int] = None
     turns: int = 0
     status: str = "pending"  # pending, active, completed, abandoned
-    created_at: datetime = datetime.now(datetime.timezone.utc)
+    created_at: datetime = datetime.now(timezone.utc)
     started_at: Optional[datetime] = None
     ended_at: Optional[datetime] = None
     

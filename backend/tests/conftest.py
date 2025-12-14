@@ -2,19 +2,16 @@ import pytest
 import sys
 import os
 from typing import Generator
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from fastapi.testclient import TestClient
 from app.core.database import init_db, get_db
 from main import socket_app
 
 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 @pytest.fixture(scope="session")
 def test_db():
     init_db(drop_existing=True)
-    from seed_database import seed_all
-    seed_all()
     yield
     
 

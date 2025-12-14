@@ -75,111 +75,111 @@ class TestYokaiModel:
 class TestAttackModel:
     
     def test_attack_creation_minimal(self):
-        attack = Attack(id="A001", name="Punch")
+        attack = Attack(id="A001", command="Punch")
         assert attack.id == "A001"
-        assert attack.name == "Punch"
+        assert attack.command == "Punch"
     
     def test_attack_with_stats(self):
         attack = Attack(
             id="A001",
-            name="Punch",
-            bp=40,
-            hits=1,
-            accuracy=100
+            command="Punch",
+            lv1_power=40,
+            n_hits=1
         )
-        assert attack.bp == 40
-        assert attack.hits == 1
-        assert attack.accuracy == 100
+        assert attack.lv1_power == 40
+        assert attack.n_hits == 1
     
     def test_attack_serialization(self):
-        attack = Attack(id="A001", name="Punch", bp=40)
+        attack = Attack(id="A001", command="Punch", lv1_power=40)
         data = attack.model_dump()
         assert data["id"] == "A001"
-        assert data["name"] == "Punch"
+        assert data["command"] == "Punch"
 
 
 class TestTechniqueModel:
     
     def test_technique_creation(self):
-        tech = Technique(id="T001", name="Blaze")
+        tech = Technique(id="T001", command="Blaze")
         assert tech.id == "T001"
-        assert tech.name == "Blaze"
+        assert tech.command == "Blaze"
     
     def test_technique_with_attribute(self):
         tech = Technique(
             id="T001",
-            name="Blaze",
-            attribute="fire",
-            bp=80,
-            spirit_cost=20
+            command="Blaze",
+            element="fire",
+            lv1_power=80
         )
-        assert tech.attribute == "fire"
-        assert tech.bp == 80
-        assert tech.spirit_cost == 20
+        assert tech.element == "fire"
+        assert tech.lv1_power == 80
     
     def test_technique_serialization(self):
-        tech = Technique(id="T001", name="Blaze", attribute="fire")
+        tech = Technique(id="T001", command="Blaze", element="fire")
         data = tech.model_dump()
         assert data["id"] == "T001"
-        assert data["attribute"] == "fire"
+        assert data["element"] == "fire"
 
 
 class TestInspiritModel:
     
     def test_inspirit_creation(self):
-        inspirit = Inspirit(id="I001", name="Terrorize")
+        inspirit = Inspirit(id="I001", command="Terrorize", effects=[])
         assert inspirit.id == "I001"
-        assert inspirit.name == "Terrorize"
+        assert inspirit.command == "Terrorize"
     
     def test_inspirit_with_effect(self):
+        from app.models.inspirit import InspiritEffect
+        effect = InspiritEffect(
+            EffectDesc="Lower defense",
+            GenericEffectID="stat_down",
+            Target="def",
+            Tier=2
+        )
         inspirit = Inspirit(
             id="I001",
-            name="Terrorize",
-            effect_type="stat_down",
-            target_stat="def",
-            magnitude=2
+            command="Terrorize",
+            effects=[effect]
         )
-        assert inspirit.effect_type == "stat_down"
-        assert inspirit.target_stat == "def"
-        assert inspirit.magnitude == 2
+        assert len(inspirit.effects) == 1
+        assert inspirit.effects[0].GenericEffectID == "stat_down"
+        assert inspirit.effects[0].Target == "def"
+        assert inspirit.effects[0].Tier == 2
 
 
 class TestSoultimateModel:
     
     def test_soultimate_creation(self):
-        soultimate = Soultimate(id="S001", name="Paws of Fury")
+        soultimate = Soultimate(id="S001", command="Paws of Fury")
         assert soultimate.id == "S001"
-        assert soultimate.name == "Paws of Fury"
+        assert soultimate.command == "Paws of Fury"
     
     def test_soultimate_with_power(self):
         soultimate = Soultimate(
             id="S001",
-            name="Paws of Fury",
-            bp=120,
-            attribute="fire",
-            target="single"
+            command="Paws of Fury",
+            lv1_power=120,
+            element="fire"
         )
-        assert soultimate.bp == 120
-        assert soultimate.attribute == "fire"
-        assert soultimate.target == "single"
+        assert soultimate.lv1_power == 120
+        assert soultimate.element == "fire"
 
 
 class TestSkillModel:
     
     def test_skill_creation(self):
-        skill = Skill(id=1, name="Popularity")
+        skill = Skill(id=1, name="Popularity", description="Increases popularity")
         assert skill.id == 1
         assert skill.name == "Popularity"
+        assert skill.description == "Increases popularity"
     
     def test_skill_with_effect(self):
         skill = Skill(
             id=1,
             name="Popularity",
-            effect_type="stat_boost",
-            magnitude=1.2
+            description="Boosts stats"
         )
-        assert skill.effect_type == "stat_boost"
-        assert skill.magnitude == 1.2
+        assert skill.name == "Popularity"
+        assert skill.description == "Boosts stats"
 
 
 class TestEquipmentModel:
@@ -193,13 +193,13 @@ class TestEquipmentModel:
         equipment = Equipment(
             id=1,
             name="Swords of the Gods",
-            str_bonus=20,
-            spr_bonus=10,
-            def_bonus=5
+            str_bonus="+20",
+            spr_bonus="+10",
+            def_bonus="+5"
         )
-        assert equipment.str_bonus == 20
-        assert equipment.spr_bonus == 10
-        assert equipment.def_bonus == 5
+        assert equipment.str_bonus == "+20"
+        assert equipment.spr_bonus == "+10"
+        assert equipment.def_bonus == "+5"
 
 
 class TestAttitudeModel:
@@ -213,13 +213,13 @@ class TestAttitudeModel:
         attitude = Attitude(
             id=1,
             name="Rough",
-            str_boost=15,
-            spr_boost=-10,
-            def_boost=5
+            boost_str=15,
+            boost_spr=-10,
+            boost_def=5
         )
-        assert attitude.str_boost == 15
-        assert attitude.spr_boost == -10
-        assert attitude.def_boost == 5
+        assert attitude.boost_str == 15
+        assert attitude.boost_spr == -10
+        assert attitude.boost_def == 5
 
 
 class TestSoulGemModel:
@@ -233,10 +233,7 @@ class TestSoulGemModel:
         gem = SoulGem(
             id=1,
             name="Jibanyan's Soul Gem",
-            yokai_id="001",
-            bonus_stat="str",
-            bonus_value=30
+            description="A powerful gem"
         )
-        assert gem.yokai_id == "001"
-        assert gem.bonus_stat == "str"
-        assert gem.bonus_value == 30
+        assert gem.name == "Jibanyan's Soul Gem"
+        assert gem.description == "A powerful gem"
