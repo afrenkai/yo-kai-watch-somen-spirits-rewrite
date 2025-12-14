@@ -1,15 +1,20 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List, Dict, Any
+
+
+class InspiritEffect(BaseModel):
+    EffectDesc: str
+    GenericEffectID: str
+    Target: str
+    Tier: Optional[int] = None
 
 
 class Inspirit(BaseModel):
-    id: int
-    code: str
-    name: str
-    effect: str  # Confusion, StatDown, StatUp, Drain, etc.
-    power: Optional[int] = None
-    duration: int  # Number of turns
-    targets: str
+    id: str  # Hex ID from JS
+    command: str  # The inspirit name
+    effects: List[InspiritEffect]  # Array of effects
+    image: Optional[str] = None
     
     class Config:
         from_attributes = True
+

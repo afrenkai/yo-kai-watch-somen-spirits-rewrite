@@ -8,7 +8,7 @@ class User(BaseModel):
     username: str
     email: Optional[EmailStr] = None
     hashed_password: str
-    created_at: datetime = datetime.utcnow()
+    created_at: datetime = datetime.now(datetime.timezone.utc)
     total_battles: int = 0
     wins: int = 0
     losses: int = 0
@@ -42,7 +42,7 @@ class Battle(BaseModel):
     duration: Optional[int] = None
     turns: int = 0
     status: str = "pending"  # pending, active, completed, abandoned
-    created_at: datetime = datetime.utcnow()
+    created_at: datetime = datetime.now(datetime.timezone.utc)
     started_at: Optional[datetime] = None
     ended_at: Optional[datetime] = None
     

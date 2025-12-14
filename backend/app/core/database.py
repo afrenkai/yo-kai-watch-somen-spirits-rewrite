@@ -6,7 +6,7 @@ from contextlib import contextmanager
 
 duckdb_conn = None
 
-
+#disgusting logic for handling duckdb conn
 def get_duckdb():
     global duckdb_conn
     if duckdb_conn is None:
@@ -24,104 +24,153 @@ def get_db() -> Generator[duckdb.DuckDBPyConnection, None, None]:
         raise e
 
 
-def init_db():
+def init_db(drop_existing: bool = False):
+    """
+    Initialize the database schema.
+    
+    Args:
+        drop_existing: If True, drop all existing tables before creating new ones.
+                      Default is False to preserve data on application restart.
+    """
     db = get_duckdb()
     
-    db.execute("DROP TABLE IF EXISTS yokai")
-    db.execute("DROP TABLE IF EXISTS attacks")
-    db.execute("DROP TABLE IF EXISTS techniques")
-    db.execute("DROP TABLE IF EXISTS soultimate")
-    db.execute("DROP TABLE IF EXISTS inspirit")
-    db.execute("DROP TABLE IF EXISTS skills")
-    
+    if drop_existing:
+        db.execute("DROP TABLE IF EXISTS yokai")
+        db.execute("DROP TABLE IF EXISTS attacks")
+        db.execute("DROP TABLE IF EXISTS techniques")
+        db.execute("DROP TABLE IF EXISTS soultimate")
+        db.execute("DROP TABLE IF EXISTS inspirit")
+        db.execute("DROP TABLE IF EXISTS skills")
+        db.execute("DROP TABLE IF EXISTS attitudes")
+        db.execute("DROP TABLE IF EXISTS equipment")
+        db.execute("DROP TABLE IF EXISTS soul_gems")
+
     db.execute("""
-        CREATE TABLE yokai (
-            id INTEGER,
-            code VARCHAR PRIMARY KEY,
+        CREATE TABLE IF NOT EXISTS yokai (
+            id VARCHAR PRIMARY KEY,
             name VARCHAR NOT NULL,
-            rank VARCHAR NOT NULL,
-            tribe VARCHAR NOT NULL,
-            attribute VARCHAR NOT NULL,
-            hp INTEGER NOT NULL,
-            str_stat INTEGER NOT NULL,
-            spr_stat INTEGER NOT NULL,
-            def_stat INTEGER NOT NULL,
-            spd_stat INTEGER NOT NULL,
-            attack_id INTEGER NOT NULL,
-            technique_id INTEGER,
-            inspirit_id INTEGER,
-            soultimate_id INTEGER NOT NULL,
-            skill_id INTEGER,
-            tier VARCHAR,
+            image VARCHAR,
+            bs_a_hp INTEGER,
+            bs_a_str INTEGER,
+            bs_a_spr INTEGER,
+            bs_a_def INTEGER,
+            bs_a_spd INTEGER,
+            bs_b_hp INTEGER,
+            bs_b_str INTEGER,
+            bs_b_spr INTEGER,
+            bs_b_def INTEGER,
+            bs_b_spd INTEGER,
             fire_res FLOAT DEFAULT 1.0,
             water_res FLOAT DEFAULT 1.0,
-            lightning_res FLOAT DEFAULT 1.0,
+            electric_res FLOAT DEFAULT 1.0,
             earth_res FLOAT DEFAULT 1.0,
             wind_res FLOAT DEFAULT 1.0,
             ice_res FLOAT DEFAULT 1.0,
-            prob_attack FLOAT DEFAULT 0.5,
-            prob_technique FLOAT DEFAULT 0.2,
-            prob_inspirit FLOAT DEFAULT 0.15,
-            prob_guard FLOAT DEFAULT 0.1,
-            prob_loaf FLOAT DEFAULT 0.05
+            equipment_slots INTEGER DEFAULT 1,
+            attack_prob FLOAT DEFAULT 0.5,
+            attack_id VARCHAR,
+            technique_prob FLOAT DEFAULT 0.2,
+            technique_id VARCHAR,
+            inspirit_prob FLOAT DEFAULT 0.1,
+            inspirit_id VARCHAR,
+            guard_prob FLOAT DEFAULT 0.05,
+            soultimate_id VARCHAR,
+            skill_id INTEGER,
+            rank VARCHAR,
+            tribe VARCHAR,
+            artwork_image VARCHAR,
+            tier VARCHAR,
+            extra VARCHAR
         )
     """)
     
     db.execute("""
-        CREATE TABLE attacks (
-            id INTEGER PRIMARY KEY,
-            code VARCHAR UNIQUE NOT NULL,
-            name VARCHAR NOT NULL,
-            bp INTEGER NOT NULL,
-            hits INTEGER NOT NULL,
-            targets VARCHAR NOT NULL,
-            attribute VARCHAR NOT NULL
+        CREATE TABLE IF NOT EXISTS attacks (
+            id VARCHAR PRIMARY KEY,
+            command VARCHAR NOT NULL,
+            lv1_power INTEGER,
+            lv10_power INTEGER,
+            n_hits INTEGER DEFAULT 1,
+            element VARCHAR,
+            extra VARCHAR
+        )
+    """)
+    
+    # Techniques table
+    db.execute("""
+        CREATE TABLE IF NOT EXISTS techniques (
+            id VARCHAR PRIMARY KEY,
+            command VARCHAR NOT NULL,
+            lv1_power INTEGER,
+            lv10_power INTEGER,
+            n_hits INTEGER DEFAULT 1,
+            element VARCHAR,
+            extra VARCHAR
         )
     """)
     
     db.execute("""
-        CREATE TABLE techniques (
+        CREATE TABLE IF NOT EXISTS skills (
             id INTEGER PRIMARY KEY,
-            code VARCHAR UNIQUE NOT NULL,
-            name VARCHAR NOT NULL,
-            bp INTEGER NOT NULL,
-            hits INTEGER NOT NULL,
-            targets VARCHAR NOT NULL,
-            attribute VARCHAR NOT NULL,
-            move_type VARCHAR NOT NULL
-        )
-    """)
-    
-    db.execute("""
-        CREATE TABLE skills (
-            id INTEGER PRIMARY KEY,
-            code VARCHAR UNIQUE NOT NULL,
             name VARCHAR NOT NULL,
             description VARCHAR NOT NULL
         )
     """)
     
     db.execute("""
-        CREATE TABLE inspirit (
-            id INTEGER PRIMARY KEY,
-            code VARCHAR UNIQUE NOT NULL,
-            name VARCHAR NOT NULL,
-            tags VARCHAR NOT NULL,
-            effect_type VARCHAR NOT NULL
+        CREATE TABLE IF NOT EXISTS inspirit (
+            id VARCHAR PRIMARY KEY,
+            command VARCHAR NOT NULL,
+            effects JSON,
+            image VARCHAR
         )
     """)
     
     db.execute("""
-        CREATE TABLE soultimate (
+        CREATE TABLE IF NOT EXISTS soultimate (
+            id VARCHAR PRIMARY KEY,
+            command VARCHAR NOT NULL,
+            lv1_power INTEGER,
+            lv10_power INTEGER,
+            lv1_soul_charge INTEGER,
+            lv10_soul_charge INTEGER,
+            n_hits INTEGER DEFAULT 1,
+            element VARCHAR,
+            extra VARCHAR
+        )
+    """)
+    
+    db.execute("""
+        CREATE TABLE IF NOT EXISTS attitudes (
             id INTEGER PRIMARY KEY,
-            code VARCHAR UNIQUE NOT NULL,
             name VARCHAR NOT NULL,
-            bp INTEGER NOT NULL,
-            hits INTEGER NOT NULL,
-            targets VARCHAR NOT NULL,
-            attribute VARCHAR NOT NULL,
-            move_type VARCHAR NOT NULL,
-            inspirit_effect VARCHAR
+            boost_hp INTEGER DEFAULT 0,
+            boost_str INTEGER DEFAULT 0,
+            boost_spr INTEGER DEFAULT 0,
+            boost_def INTEGER DEFAULT 0,
+            boost_spd INTEGER DEFAULT 0
+        )
+    """)
+    
+    db.execute("""
+        CREATE TABLE IF NOT EXISTS equipment (
+            id INTEGER PRIMARY KEY,
+            name VARCHAR NOT NULL,
+            description VARCHAR,
+            str_bonus VARCHAR,
+            spr_bonus VARCHAR,
+            def_bonus VARCHAR,
+            spd_bonus VARCHAR,
+            image VARCHAR
+        )
+    """)
+    
+    db.execute("""
+        CREATE TABLE IF NOT EXISTS soul_gems (
+            id INTEGER PRIMARY KEY,
+            name VARCHAR NOT NULL,
+            description VARCHAR,
+            image VARCHAR
         )
     """)
     

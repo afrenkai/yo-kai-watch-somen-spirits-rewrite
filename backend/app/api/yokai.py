@@ -8,25 +8,40 @@ router = APIRouter()
 
 
 class YokaiResponse(BaseModel):
-    id: int
+    id: str
     name: str
+    image: str | None = None
+    bs_a_hp: int
+    bs_a_str: int
+    bs_a_spr: int
+    bs_a_def: int
+    bs_a_spd: int
+    bs_b_hp: int
+    bs_b_str: int
+    bs_b_spr: int
+    bs_b_def: int
+    bs_b_spd: int
+    fire_res: float
+    water_res: float
+    electric_res: float
+    earth_res: float
+    wind_res: float
+    ice_res: float
+    equipment_slots: int
+    attack_prob: float
+    attack_id: str
+    technique_prob: float
+    technique_id: str | None = None
+    inspirit_prob: float
+    inspirit_id: str | None = None
+    guard_prob: float
+    soultimate_id: str
+    skill_id: int | None = None
     rank: str
     tribe: str
-    hp: int
-    str_stat: int
-    spr_stat: int
-    def_stat: int
-    spd_stat: int
-    attack_id: int
-    technique_id: int | None
-    inspirit_id: int | None
-    soultimate_id: int
-    skill_id: int | None
-    favorite_food: str | None
-    image_url: str | None
-    description: str | None
-    tier: str | None
-    is_legendary: int
+    artwork_image: str | None = None
+    tier: str | None = None
+    extra: str | None = None
     
     class Config:
         from_attributes = True
@@ -40,6 +55,7 @@ def get_all_yokai(
     rank: str | None = None,
     tier: str | None = None
 ):
+    """Get all Yo-kai with optional filtering"""
     with get_db() as db:
         query = "SELECT * FROM yokai WHERE 1=1"
         params = []
@@ -64,7 +80,7 @@ def get_all_yokai(
 
 
 @router.get("/{yokai_id}", response_model=YokaiResponse)
-def get_yokai(yokai_id: int):
+def get_yokai(yokai_id: str):
     with get_db() as db:
         result = db.execute("SELECT * FROM yokai WHERE id = ?", [yokai_id]).fetchone()
         

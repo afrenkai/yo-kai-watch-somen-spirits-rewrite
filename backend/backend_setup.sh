@@ -16,7 +16,6 @@ if ! command -v uv &> /dev/null; then
     fi
     echo "uv is not installed. Installing uv with curl..."
     curl -LsSf https://astral.sh/uv/install.sh | sh
-    export PATH="$HOME/.cargo/bin:$PATH"
 fi
 
 if ! command -v redis-cli &> /dev/null; then

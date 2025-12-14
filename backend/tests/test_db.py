@@ -1,57 +1,129 @@
-from app.core.database import get_duckdb, init_db
+import pytest
+from app.core.database import get_db
 
-def test_database():
-    print("Testing DuckDB backend...\n")
-    print("Initializing database...")
-    try:
-        init_db()
-        print("Database initialized\n")
-    except Exception as e:
-        print(f"Could not initialize database: {e}\n")
-        return False
 
-    print("Connecting to database...")
-    try:
-        db = get_duckdb()
-        print("Connected to database\n")
-    except Exception as e:
-        print(f"Could not connect to database: {e}\n")
-        return False
- 
-    print("Checking tables...")
-    try:
-        tables = db.execute("""
-            SELECT table_name 
-            FROM information_schema.tables 
-            WHERE table_schema = 'main'
-        """).fetchall()
-        
-        table_names = [t[0] for t in tables]
-        expected_tables = ['yokai', 'attacks', 'techniques', 'skills', 
-                          'inspirits', 'soultimates', 'users', 'teams', 
-                          'battles', 'battle_logs', 'player_stats']
-        
-        print(f"   Found {len(table_names)} tables:")
-        for table in table_names:
-            status = "ok" if table in expected_tables else "bad"
-            print(f"{status} {table}")
-        print()
-    except Exception as e:
-        print(f"Failed to fetch tables: {e}\n")
-        return False
+class TestDatabaseTables:
     
-    print("Testing query...")
-    try:
-        result = db.execute("SELECT COUNT(*) FROM yokai").fetchone()
-        yokai_count = result[0]
-        print(f"Found {yokai_count} yokai in database\n")
-    except Exception as e:
-        print(f"Failed to count yokai: {e}\n")
-        return False
+    def test_attacks_table_exists(self, db_connection):
+        result = db_connection.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='attacks'").fetchone()
+        assert result is not None
     
-    print("All tests passed!")
-    return True
+    def test_attacks_table_structure(self, db_connection):
+        result = db_connection.execute("SELECT * FROM attacks LIMIT 1").fetchall()
+        assert db_connection.description is not None
+        columns = [desc[0] for desc in db_connection.description]
+        assert 'id' in columns
+        assert 'name' in columns
+    
+    def test_techniques_table_exists(self, db_connection):
+        result = db_connection.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='techniques'").fetchone()
+        assert result is not None
+    
+    def test_techniques_table_structure(self, db_connection):
+        result = db_connection.execute("SELECT * FROM techniques LIMIT 1").fetchall()
+        assert db_connection.description is not None
+        columns = [desc[0] for desc in db_connection.description]
+        assert 'id' in columns
+        assert 'name' in columns
+        assert 'attribute' in columns
+    
+    def test_soultimate_table_exists(self, db_connection):
+        result = db_connection.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='soultimate'").fetchone()
+        assert result is not None
+    
+    def test_soultimate_table_structure(self, db_connection):
+        result = db_connection.execute("SELECT * FROM soultimate LIMIT 1").fetchall()
+        assert db_connection.description is not None
+        columns = [desc[0] for desc in db_connection.description]
+        assert 'id' in columns
+        assert 'name' in columns
+    
+    def test_inspirit_table_exists(self, db_connection):
+        result = db_connection.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='inspirit'").fetchone()
+        assert result is not None
+    
+    def test_inspirit_table_structure(self, db_connection):
+        result = db_connection.execute("SELECT * FROM inspirit LIMIT 1").fetchall()
+        assert db_connection.description is not None
+        columns = [desc[0] for desc in db_connection.description]
+        assert 'id' in columns
+        assert 'name' in columns
+    
+    def test_yokai_table_exists(self, db_connection):
+        result = db_connection.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='yokai'").fetchone()
+        assert result is not None
+    
+    def test_yokai_table_structure(self, db_connection):
+        result = db_connection.execute("SELECT * FROM yokai LIMIT 1").fetchall()
+        assert db_connection.description is not None
+        columns = [desc[0] for desc in db_connection.description]
+        assert 'id' in columns
+        assert 'name' in columns
+        assert 'tribe' in columns
 
-if __name__ == "__main__":
-    success = test_database()
-    exit(0 if success else 1)
+
+class TestDatabaseCRUD:
+    
+    def test_query_all_yokai(self, db_connection):
+        result = db_connection.execute("SELECT * FROM yokai").fetchall()
+        assert len(result) > 0
+    
+    def test_query_yokai_by_id(self, db_connection):
+        result = db_connection.execute("SELECT * FROM yokai WHERE id = ?", [1]).fetchone()
+        assert result is not None
+    
+    def test_query_yokai_by_tribe(self, db_connection):
+        result = db_connection.execute("SELECT * FROM yokai WHERE tribe = ?", ["Brave"]).fetchall()
+        assert isinstance(result, list)
+    
+    def test_query_all_attacks(self, db_connection):
+        result = db_connection.execute("SELECT * FROM attacks").fetchall()
+        assert len(result) > 0
+    
+    def test_query_attack_by_id(self, db_connection):
+        result = db_connection.execute("SELECT * FROM attacks WHERE id = ?", [1]).fetchone()
+        assert result is not None
+    
+    def test_query_all_techniques(self, db_connection):
+        result = db_connection.execute("SELECT * FROM techniques").fetchall()
+        assert len(result) > 0
+    
+    def test_query_technique_by_attribute(self, db_connection):
+        result = db_connection.execute("SELECT * FROM techniques WHERE attribute = ?", ["fire"]).fetchall()
+        assert isinstance(result, list)
+    
+    def test_query_all_soultimates(self, db_connection):
+        result = db_connection.execute("SELECT * FROM soultimate").fetchall()
+        assert len(result) > 0
+    
+    def test_query_all_inspirits(self, db_connection):
+        result = db_connection.execute("SELECT * FROM inspirit").fetchall()
+        assert len(result) > 0
+    
+    def test_count_yokai(self, db_connection):
+        result = db_connection.execute("SELECT COUNT(*) FROM yokai").fetchone()
+        assert result[0] > 0
+    
+    def test_count_attacks(self, db_connection):
+        result = db_connection.execute("SELECT COUNT(*) FROM attacks").fetchone()
+        assert result[0] > 0
+
+
+class TestDatabaseIntegrity:
+    
+    def test_no_null_yokai_names(self, db_connection):
+        result = db_connection.execute("SELECT COUNT(*) FROM yokai WHERE name IS NULL").fetchone()
+        assert result[0] == 0
+    
+    def test_yokai_resistances_valid(self, db_connection):
+        result = db_connection.execute("SELECT * FROM yokai WHERE fire_res < 0 OR water_res < 0").fetchall()
+        assert len(result) == 0
+    
+    def test_attack_bp_positive(self, db_connection):
+        result = db_connection.execute("SELECT * FROM attacks WHERE bp < 0").fetchall()
+        assert len(result) == 0
+    
+    def test_technique_bp_positive(self, db_connection):
+        result = db_connection.execute("SELECT * FROM techniques WHERE bp < 0").fetchall()
+        assert len(result) == 0
+

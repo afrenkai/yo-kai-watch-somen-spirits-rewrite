@@ -29,6 +29,9 @@ uv.lock
 .env
 .venv
 
+#logs 
+*.log
+
 # DB stuff
 *.db
 *.duckdb
