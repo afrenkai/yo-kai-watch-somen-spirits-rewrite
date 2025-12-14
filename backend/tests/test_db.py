@@ -69,7 +69,7 @@ class TestDatabaseCRUD:
         assert isinstance(result, list)
     
     def test_query_yokai_by_id(self, db_connection):
-        result = db_connection.execute("SELECT * FROM yokai WHERE id = ?", [1]).fetchone()
+        result = db_connection.execute("SELECT * FROM yokai WHERE id = ?", ['test_001']).fetchone()
         # Result may be None if no data exists
         assert result is None or isinstance(result, tuple)
     
@@ -82,7 +82,7 @@ class TestDatabaseCRUD:
         assert isinstance(result, list)
     
     def test_query_attack_by_id(self, db_connection):
-        result = db_connection.execute("SELECT * FROM attacks WHERE id = ?", [1]).fetchone()
+        result = db_connection.execute("SELECT * FROM attacks WHERE id = ?", ['attack_001']).fetchone()
         # Result may be None if no data exists
         assert result is None or isinstance(result, tuple)
     

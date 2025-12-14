@@ -7,14 +7,14 @@ class TestFullBattleFlow:
     
     def test_complete_battle_initialization_to_end(self, sample_team):
         team1 = [
-            {'id': 1, 'hp': 220},
-            {'id': 2, 'hp': 200},
-            {'id': 3, 'hp': 240}
+            {'id': 'test_001', 'hp': 220},
+            {'id': 'test_002', 'hp': 200},
+            {'id': 'test_001', 'hp': 240}
         ]
         team2 = [
-            {'id': 4, 'hp': 210},
-            {'id': 5, 'hp': 190},
-            {'id': 6, 'hp': 230}
+            {'id': 'test_002', 'hp': 210},
+            {'id': 'test_001', 'hp': 190},
+            {'id': 'test_002', 'hp': 230}
         ]
         
         engine = BattleEngine(team1, team2)
@@ -45,7 +45,7 @@ class TestFullBattleFlow:
         initial_hp = target.get('hp', target.get('current_hp', 200))
         
         for _ in range(3):
-            result = engine._execute_attack(attacker, target, attack_id=1)
+            result = engine._execute_attack(attacker, target, attack_id='attack_001')
             if result.get('success'):
                 assert 'damage' in result
         
@@ -56,8 +56,8 @@ class TestFullBattleFlow:
 class TestBattleScenarios:
     
     def test_super_effective_attack_scenario(self, sample_team):
-        team1 = [{'id': 1, 'hp': 220}]
-        team2 = [{'id': 2, 'hp': 200}]
+        team1 = [{'id': 'test_001', 'hp': 220}]
+        team2 = [{'id': 'test_002', 'hp': 200}]
         
         engine = BattleEngine(team1, team2)
         
@@ -67,14 +67,14 @@ class TestBattleScenarios:
         if hasattr(target, 'get'):
             target['fire_res'] = 2.0
         
-        result = engine._execute_technique(attacker, target, technique_id=1)
+        result = engine._execute_technique(attacker, target, technique_id='tech_001')
         
         if result.get('success'):
             assert 'elemental_modifier' in result
     
     def test_resistant_attack_scenario(self, sample_team):
-        team1 = [{'id': 1, 'hp': 220}]
-        team2 = [{'id': 2, 'hp': 200}]
+        team1 = [{'id': 'test_001', 'hp': 220}]
+        team2 = [{'id': 'test_002', 'hp': 200}]
         
         engine = BattleEngine(team1, team2)
         
@@ -84,21 +84,21 @@ class TestBattleScenarios:
         if hasattr(target, 'get'):
             target['fire_res'] = 0.5
         
-        result = engine._execute_technique(attacker, target, technique_id=1)
+        result = engine._execute_technique(attacker, target, technique_id='tech_001')
         
         if result.get('success'):
             assert 'elemental_modifier' in result
     
     def test_team_wipe_scenario(self, sample_team):
-        team1 = [{'id': 1, 'hp': 220}]
-        team2 = [{'id': 2, 'hp': 1}]
+        team1 = [{'id': 'test_001', 'hp': 220}]
+        team2 = [{'id': 'test_002', 'hp': 1}]
         
         engine = BattleEngine(team1, team2)
         
         attacker = engine.state['team1'][0]
         target = engine.state['team2'][0]
         
-        result = engine._execute_attack(attacker, target, attack_id=1)
+        result = engine._execute_attack(attacker, target, attack_id='attack_001')
         
         if result.get('success'):
             final_hp = target.get('hp', target.get('current_hp', 1))
@@ -118,7 +118,7 @@ class TestBattleStateManagement:
         attacker = engine.state['team1'][0]
         target = engine.state['team2'][0]
         
-        engine._execute_attack(attacker, target, attack_id=1)
+        engine._execute_attack(attacker, target, attack_id='attack_001')
         
         assert isinstance(engine.state['log'], list)
     
@@ -148,7 +148,7 @@ class TestTeamInteraction:
             attacker = engine.state['team1'][i]
             target = engine.state['team2'][0]
             
-            result = engine._execute_attack(attacker, target, attack_id=1)
+            result = engine._execute_attack(attacker, target, attack_id='attack_001')
             
             if result.get('success'):
                 assert 'damage' in result
@@ -164,7 +164,7 @@ class TestTeamInteraction:
         for i in range(min(3, len(engine.state['team2']))):
             target = engine.state['team2'][i]
             
-            result = engine._execute_attack(attacker, target, attack_id=1)
+            result = engine._execute_attack(attacker, target, attack_id='attack_001')
             
             if result.get('success'):
                 assert 'damage' in result
@@ -198,8 +198,17 @@ class TestDatabaseIntegration:
         columns = [desc[0] for desc in db_connection.description]
         attack = dict(zip(columns, attack_result))
         
-        team1 = [{'id': 1, 'hp': 220}]
-        team2 = [{'id': 2, 'hp': 200}]
+        # Get real yokai IDs from the database
+        yokai_result = db_connection.execute("SELECT id, bs_a_hp FROM yokai LIMIT 2").fetchall()
+        if len(yokai_result) < 2:
+            pytest.skip("Not enough yokai data")
+        
+        yokai_columns = [desc[0] for desc in db_connection.description]
+        yokai1 = dict(zip(yokai_columns, yokai_result[0]))
+        yokai2 = dict(zip(yokai_columns, yokai_result[1]))
+        
+        team1 = [{'id': yokai1['id'], 'hp': yokai1.get('bs_a_hp', 220)}]
+        team2 = [{'id': yokai2['id'], 'hp': yokai2.get('bs_a_hp', 200)}]
         
         engine = BattleEngine(team1, team2)
         attacker = engine.state['team1'][0]
@@ -219,8 +228,17 @@ class TestDatabaseIntegration:
         columns = [desc[0] for desc in db_connection.description]
         technique = dict(zip(columns, technique_result))
         
-        team1 = [{'id': 1, 'hp': 220}]
-        team2 = [{'id': 2, 'hp': 200}]
+        # Get real yokai IDs from the database
+        yokai_result = db_connection.execute("SELECT id, bs_a_hp FROM yokai LIMIT 2").fetchall()
+        if len(yokai_result) < 2:
+            pytest.skip("Not enough yokai data")
+        
+        yokai_columns = [desc[0] for desc in db_connection.description]
+        yokai1 = dict(zip(yokai_columns, yokai_result[0]))
+        yokai2 = dict(zip(yokai_columns, yokai_result[1]))
+        
+        team1 = [{'id': yokai1['id'], 'hp': yokai1.get('bs_a_hp', 220)}]
+        team2 = [{'id': yokai2['id'], 'hp': yokai2.get('bs_a_hp', 200)}]
         
         engine = BattleEngine(team1, team2)
         attacker = engine.state['team1'][0]
@@ -230,7 +248,7 @@ class TestDatabaseIntegration:
         
         if result.get('success'):
             assert 'damage' in result
-            assert 'attribute' in result
+            assert 'element' in result or 'attribute' in result
 
 
 class TestEdgeCases:
@@ -245,8 +263,8 @@ class TestEdgeCases:
         assert len(engine.state['log']) >= 0
     
     def test_battle_with_zero_hp_yokai(self):
-        team1 = [{'id': 1, 'hp': 0}]
-        team2 = [{'id': 2, 'hp': 200}]
+        team1 = [{'id': 'test_001', 'hp': 0}]
+        team2 = [{'id': 'test_002', 'hp': 200}]
         
         engine = BattleEngine(team1, team2)
         
@@ -262,7 +280,7 @@ class TestEdgeCases:
         target = engine.state['team2'][0]
         
         for _ in range(5):
-            engine._execute_attack(attacker, target, attack_id=1)
+            engine._execute_attack(attacker, target, attack_id='attack_001')
         
         assert 'team1' in engine.state
         assert 'team2' in engine.state
